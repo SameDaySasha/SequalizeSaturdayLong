@@ -48,7 +48,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get('/:id', async (req, res, next) => {
     let tree;
-
+ 
     try {
         tree = await Tree.findByPk(req.params.id);
 
@@ -88,9 +88,18 @@ router.get('/:id', async (req, res, next) => {
  */
 router.post('/', async (req, res, next) => {
     try {
+            const {name,location, height, size} = req.body
+            const newTree = await Tree.create({
+                tree:name,
+                location,
+                heightFt:height,
+                groundCircumferenceFt:size
+            })
         res.json({
+            
             status: "success",
             message: "Successfully created new tree",
+            data:newTree,
         });
     } catch(err) {
         next({
@@ -123,6 +132,7 @@ router.post('/', async (req, res, next) => {
  */
 router.delete('/:id', async (req, res, next) => {
     try {
+        
         res.json({
             status: "success",
             message: `Successfully removed tree ${req.params.id}`,
