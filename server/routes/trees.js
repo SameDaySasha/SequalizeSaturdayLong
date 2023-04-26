@@ -5,8 +5,8 @@ const router = express.Router();
 /**
  * BASIC PHASE 1, Step A - Import model
  */
-// Your code here
-
+const {Tree} = require('../db/models')
+ 
 /**
  * INTERMEDIATE BONUS PHASE 1 (OPTIONAL), Step A:
  *   Import Op to perform comparison operations in WHERE clauses
@@ -24,9 +24,15 @@ const router = express.Router();
  *   - Ordered by the heightFt from tallest to shortest
  */
 router.get('/', async (req, res, next) => {
-    let trees = [];
 
-    // Your code here
+
+   const trees = await Tree.findAll({
+
+    attributes:['heightFt','tree','id'], 
+    order: [['heightFt', 'DESC']],
+   }
+   
+    )
 
     res.json(trees);
 });
@@ -44,7 +50,7 @@ router.get('/:id', async (req, res, next) => {
     let tree;
 
     try {
-        // Your code here
+        tree = await Tree.findByPk(req.params.id);
 
         if (tree) {
             res.json(tree);
