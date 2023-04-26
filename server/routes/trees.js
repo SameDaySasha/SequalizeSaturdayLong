@@ -6,7 +6,7 @@ const router = express.Router();
  * BASIC PHASE 1, Step A - Import model
  */
 const {Tree} = require('../db/models')
- 
+
 /**
  * INTERMEDIATE BONUS PHASE 1 (OPTIONAL), Step A:
  *   Import Op to perform comparison operations in WHERE clauses
@@ -28,10 +28,10 @@ router.get('/', async (req, res, next) => {
 
    const trees = await Tree.findAll({
 
-    attributes:['heightFt','tree','id'], 
+    attributes:['heightFt','tree','id'],
     order: [['heightFt', 'DESC']],
    }
-   
+
     )
 
     res.json(trees);
@@ -48,7 +48,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get('/:id', async (req, res, next) => {
     let tree;
- 
+
     try {
         tree = await Tree.findByPk(req.params.id);
 
@@ -96,7 +96,7 @@ router.post('/', async (req, res, next) => {
                 groundCircumferenceFt:size
             })
         res.json({
-            
+
             status: "success",
             message: "Successfully created new tree",
             data:newTree,
@@ -131,8 +131,11 @@ router.post('/', async (req, res, next) => {
  *     - Value: Tree not found
  */
 router.delete('/:id', async (req, res, next) => {
+    let tree;
     try {
-        
+        tree = await Tree.findByPk(req.params.id)
+        await tree.destroy();
+
         res.json({
             status: "success",
             message: `Successfully removed tree ${req.params.id}`,
